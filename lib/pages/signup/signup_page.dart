@@ -9,6 +9,7 @@ import 'package:real_world/bloc/signup/signup_event.dart';
 import 'package:real_world/bloc/signup/signup_state.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/common/widgets/app_font.dart';
+import 'package:real_world/common/widgets/common_text_form_widget.dart';
 import 'package:real_world/constants/gaps.dart';
 import 'package:real_world/constants/sizes.dart';
 
@@ -58,53 +59,23 @@ class SignupPage extends StatelessWidget {
                 },
                 child: const AppFont('Have an account?'),
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: Sizes.size1,
-                    horizontal: Sizes.size10,
-                  ),
-                  hintText: 'Username',
-                  border: OutlineInputBorder(),
-                ),
-                onTapOutside: (_) {
-                  FocusScope.of(context).unfocus();
-                },
-                onChanged: (value) {
+              CommonTextForm(
+                hint: 'Username',
+                onChange: (value) {
                   context.read<SignupBloc>().add(SignupChangeUsername(value));
                 },
               ),
               Gaps.v10,
-              TextFormField(
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: Sizes.size1,
-                    horizontal: Sizes.size10,
-                  ),
-                  hintText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                onTapOutside: (_) {
-                  FocusScope.of(context).unfocus();
-                },
-                onChanged: (value) {
+              CommonTextForm(
+                hint: 'Email',
+                onChange: (value) {
                   context.read<SignupBloc>().add(SignupChangeEmail(value));
                 },
               ),
               Gaps.v10,
-              TextFormField(
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: Sizes.size1,
-                    horizontal: Sizes.size10,
-                  ),
-                  hintText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                onTapOutside: (_) {
-                  FocusScope.of(context).unfocus();
-                },
-                onChanged: (value) {
+              CommonTextForm(
+                hint: 'Password',
+                onChange: (value) {
                   context.read<SignupBloc>().add(SignupChangePassword(value));
                 },
               ),
