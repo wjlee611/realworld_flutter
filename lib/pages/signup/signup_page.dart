@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_event.dart';
+import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/bloc/signup/signup_bloc.dart';
 import 'package:real_world/bloc/signup/signup_event.dart';
 import 'package:real_world/bloc/signup/signup_state.dart';
@@ -14,18 +17,30 @@ class SignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SignupBloc, SignupState>(
-      listener: (context, state) {
-        if (state.status == ECommonStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.message ?? 'error'),
-          ));
-        }
-
-        if (state.status == ECommonStatus.loaded) {
-          print(state.resUser);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SignupBloc, SignupState>(
+          listener: (context, state) {
+            if (state.status == ECommonStatus.error) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.message ?? 'error'),
+              ));
+            }
+            if (state.status == ECommonStatus.loaded) {
+              context.read<AuthBloc>().add(AuthLogin(
+                    user: state.resUser!,
+                  ));
+            }
+          },
+        ),
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthAuthenticatedState) {
+              context.pop();
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: const AppFont('Sign up'),
