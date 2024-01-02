@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_bloc.dart';
-import 'package:real_world/bloc/signin/signin_bloc.dart';
 import 'package:real_world/pages/realworld_router.dart';
 import 'package:real_world/repository/auth_repository.dart';
 
@@ -24,11 +23,6 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (context) => AuthBloc(),
-          ),
-          BlocProvider(
-            create: (context) => SinginBloc(
-              authRepository: context.read<AuthRepository>(),
-            ),
           ),
         ],
         child: const RealWorldRouter(),

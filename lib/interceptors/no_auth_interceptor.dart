@@ -42,6 +42,6 @@ class NoAuthInterceptor extends Interceptor {
       '[ERR] code: ${err.response?.statusCode}',
     );
 
-    return handler.next(err);
+    super.onError(err, handler);
   }
 }

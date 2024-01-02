@@ -12,4 +12,4 @@ class SigninChangePassword extends SigninEvent {
   SigninChangePassword(this.password);
 }
 
-class SigninConfirmEvent extends SigninEvent {}
+class SigninConfirm extends SigninEvent {}

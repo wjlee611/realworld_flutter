@@ -2,32 +2,36 @@ import 'package:equatable/equatable.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/models/user_model.dart';
 
-class SigninState extends Equatable {
+class SignupState extends Equatable {
   final ECommonStatus status;
   final String? email;
   final String? password;
+  final String? username;
   final UserModel? resUser;
   final String? message;
 
-  const SigninState({
+  const SignupState({
     this.status = ECommonStatus.init,
-    this.email = 'wjlee611@gmail.com',
-    this.password = "Qqwe123!",
+    this.email,
+    this.password,
+    this.username,
     this.resUser,
     this.message,
   });
 
-  SigninState copyWith({
+  SignupState copyWith({
     ECommonStatus? status,
     String? email,
     String? password,
+    String? username,
     UserModel? resUser,
     String? message,
   }) =>
-      SigninState(
+      SignupState(
         status: status ?? this.status,
         email: email ?? this.email,
         password: password ?? this.password,
+        username: username ?? this.username,
         resUser: resUser ?? this.resUser,
         message: message ?? this.message,
       );
@@ -37,6 +41,7 @@ class SigninState extends Equatable {
         status,
         email,
         password,
+        username,
         resUser,
         message,
       ];

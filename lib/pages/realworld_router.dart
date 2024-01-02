@@ -1,6 +1,11 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:real_world/bloc/signup/signup_bloc.dart';
 import 'package:real_world/pages/home/home_page.dart';
+import 'package:real_world/pages/signin/signin_page.dart';
+import 'package:real_world/pages/signup/signup_page.dart';
+import 'package:real_world/repository/auth_repository.dart';
 
 class RealWorldRouter extends StatefulWidget {
   const RealWorldRouter({super.key});
@@ -22,6 +27,19 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
         GoRoute(
           path: '/',
           builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/signin',
+          builder: (context, state) => const SigninPage(),
+        ),
+        GoRoute(
+          path: '/signup',
+          builder: (context, state) => BlocProvider(
+            create: (context) => SignupBloc(
+              authRepository: context.read<AuthRepository>(),
+            ),
+            child: const SignupPage(),
+          ),
         ),
       ],
     );

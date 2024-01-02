@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:real_world/constants/end_points.dart';
 import 'package:real_world/constants/strings.dart';
 
 class AuthInterceptor extends Interceptor {
@@ -14,8 +15,15 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
+    // base url 설정
+    options.baseUrl = EndPoints.mock;
+
     // jwt token 불러오기
     final jwt = await _storage.read(key: Strings.jwtToken);
+
+    // 기타 헤더 작성
+    options.headers['X-Requested-With'] = 'XMLHttpRequest';
+    options.headers['Content-Type'] = 'application/json';
 
     // 매 요청마다 헤더에 token 포함
     options.headers['Authorization'] = 'Token $jwt';

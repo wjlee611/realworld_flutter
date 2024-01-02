@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:real_world/interceptors/no_auth_interceptor.dart';
 import 'package:real_world/models/user_model.dart';
@@ -27,11 +26,31 @@ class AuthRepository {
     return UserModel.fromJson(res.data);
   }
 
-  Future<UserModel?> postRegistr({
+  Future<UserModel> postRegistr({
     required String email,
     required String password,
     required String username,
   }) async {
-    return null;
+    try {
+      Dio dio = Dio();
+      dio.interceptors.add(NoAuthInterceptor());
+
+      Map<String, dynamic> body = {
+        'user': {
+          'username': username,
+          'email': email,
+          'password': password,
+        }
+      };
+
+      var res = await dio.post(
+        '/api/users',
+        data: jsonEncode(body),
+      );
+
+      return UserModel.fromJson(res.data);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

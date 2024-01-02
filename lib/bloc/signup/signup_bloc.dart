@@ -1,24 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:real_world/bloc/signin/signin_event.dart';
-import 'package:real_world/bloc/signin/signin_state.dart';
+import 'package:real_world/bloc/signup/signup_event.dart';
+import 'package:real_world/bloc/signup/signup_state.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/repository/auth_repository.dart';
 
-class SinginBloc extends Bloc<SigninEvent, SigninState> {
+class SignupBloc extends Bloc<SignupEvent, SignupState> {
   final AuthRepository authRepository;
 
-  SinginBloc({
+  SignupBloc({
     required this.authRepository,
-  }) : super(const SigninState()) {
-    on<SigninChangeEmail>(_signinChangeEmailHandler);
-    on<SigninChangePassword>(_signinChangePasswordHandler);
-    on<SigninConfirm>(_signinConfirmHandler);
+  }) : super(const SignupState()) {
+    on<SignupChangeEmail>(_signupChangeEmailHandler);
+    on<SignupChangePassword>(_signupChangePasswordHandler);
+    on<SignupChangeUsername>(_signupChangeUsernameHandler);
+    on<SignupConfirm>(_signupConfirmHandler);
   }
 
-  Future<void> _signinChangeEmailHandler(
-    SigninChangeEmail event,
-    Emitter<SigninState> emit,
+  Future<void> _signupChangeEmailHandler(
+    SignupChangeEmail event,
+    Emitter<SignupState> emit,
   ) async {
     emit(state.copyWith(
       status: ECommonStatus.init,
@@ -26,9 +27,9 @@ class SinginBloc extends Bloc<SigninEvent, SigninState> {
     ));
   }
 
-  Future<void> _signinChangePasswordHandler(
-    SigninChangePassword event,
-    Emitter<SigninState> emit,
+  Future<void> _signupChangePasswordHandler(
+    SignupChangePassword event,
+    Emitter<SignupState> emit,
   ) async {
     emit(state.copyWith(
       status: ECommonStatus.init,
@@ -36,10 +37,21 @@ class SinginBloc extends Bloc<SigninEvent, SigninState> {
     ));
   }
 
-  Future<void> _signinConfirmHandler(
-    SigninConfirm event,
-    Emitter<SigninState> emit,
+  Future<void> _signupChangeUsernameHandler(
+    SignupChangeUsername event,
+    Emitter<SignupState> emit,
   ) async {
+    emit(state.copyWith(
+      status: ECommonStatus.init,
+      username: event.username,
+    ));
+  }
+
+  Future<void> _signupConfirmHandler(
+    SignupConfirm event,
+    Emitter<SignupState> emit,
+  ) async {
+    emit(state.copyWith(status: ECommonStatus.loading));
     try {
       if (state.email == null || state.email!.isEmpty) {
         emit(state.copyWith(
@@ -57,9 +69,18 @@ class SinginBloc extends Bloc<SigninEvent, SigninState> {
         return;
       }
 
-      var res = await authRepository.postLogin(
+      if (state.username == null || state.username!.isEmpty) {
+        emit(state.copyWith(
+          status: ECommonStatus.error,
+          message: '이름을 입력해주세요.',
+        ));
+        return;
+      }
+
+      var res = await authRepository.postRegistr(
         email: state.email!,
         password: state.password!,
+        username: state.username!,
       );
 
       emit(state.copyWith(
@@ -68,7 +89,6 @@ class SinginBloc extends Bloc<SigninEvent, SigninState> {
       ));
     } on DioException catch (e) {
       if (e.response != null) {
-        print(e.response!.data.toString());
         emit(state.copyWith(
           status: ECommonStatus.error,
           message: e.response!.data.toString(),
