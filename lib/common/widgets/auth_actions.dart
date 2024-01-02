@@ -6,17 +6,10 @@ import 'package:real_world/bloc/authentication/auth_event.dart';
 import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/common/widgets/app_font.dart';
 import 'package:real_world/constants/sizes.dart';
+import 'package:real_world/constants/strings.dart';
 
 class AuthActions extends StatelessWidget {
   const AuthActions({super.key});
-
-  void _signin(BuildContext context) {
-    context.push('/signin');
-  }
-
-  void _signup(BuildContext context) {
-    context.push('/signup');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +27,19 @@ class AuthActions extends StatelessWidget {
           );
         }
         if (state is AuthAuthenticatedState) {
-          return Padding(
-            padding: const EdgeInsets.only(right: Sizes.size20),
-            child: AppFont(state.user.username ?? ''),
+          return TextButton(
+            onPressed: () => context.push('/profile/${state.user.username}'),
+            child: AppFont(state.user.username ?? Strings.nullStr),
           );
         }
         return Row(
           children: [
             TextButton(
-              onPressed: () => _signin(context),
+              onPressed: () => context.push('/signin'),
               child: const AppFont('Sign in'),
             ),
             TextButton(
-              onPressed: () => _signup(context),
+              onPressed: () => context.push('/signup'),
               child: const AppFont('Sign up'),
             ),
           ],

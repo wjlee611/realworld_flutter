@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_bloc.dart';
 import 'package:real_world/pages/realworld_router.dart';
 import 'package:real_world/repository/auth_repository.dart';
+import 'package:real_world/repository/profile_repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider(
           create: (context) => AuthRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => ProfileRepository(),
         ),
       ],
       child: MultiBlocProvider(

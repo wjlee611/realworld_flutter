@@ -14,6 +14,9 @@ class NoAuthInterceptor extends Interceptor {
     options.headers['X-Requested-With'] = 'XMLHttpRequest';
     options.headers['Content-Type'] = 'application/json';
 
+    // time-out 설정
+    options.receiveTimeout = const Duration(seconds: 5);
+
     return handler.next(options);
   }
 

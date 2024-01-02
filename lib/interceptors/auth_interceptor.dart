@@ -25,6 +25,9 @@ class AuthInterceptor extends Interceptor {
     options.headers['X-Requested-With'] = 'XMLHttpRequest';
     options.headers['Content-Type'] = 'application/json';
 
+    // time-out 설정
+    options.receiveTimeout = const Duration(seconds: 5);
+
     // 매 요청마다 헤더에 token 포함
     options.headers['Authorization'] = 'Token $jwt';
 

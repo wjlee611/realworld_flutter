@@ -1,12 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:real_world/bloc/profile/profile_cubit.dart';
 import 'package:real_world/bloc/signin/signin_bloc.dart';
 import 'package:real_world/bloc/signup/signup_bloc.dart';
+import 'package:real_world/constants/strings.dart';
 import 'package:real_world/pages/home/home_page.dart';
+import 'package:real_world/pages/profile/profile_page.dart';
 import 'package:real_world/pages/signin/signin_page.dart';
 import 'package:real_world/pages/signup/signup_page.dart';
 import 'package:real_world/repository/auth_repository.dart';
+import 'package:real_world/repository/profile_repository.dart';
 
 class RealWorldRouter extends StatefulWidget {
   const RealWorldRouter({super.key});
@@ -45,6 +49,17 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
               authRepository: context.read<AuthRepository>(),
             ),
             child: const SignupPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/profile/:username',
+          builder: (context, state) => BlocProvider(
+            create: (context) => ProfileCubit(
+              profileRepository: context.read<ProfileRepository>(),
+            ),
+            child: ProfilePage(
+              username: state.pathParameters['username'] ?? Strings.nullStr,
+            ),
           ),
         ),
       ],
