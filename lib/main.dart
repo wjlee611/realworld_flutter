@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:real_world/pages/realworld_app.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/signin/signin_bloc.dart';
+import 'package:real_world/pages/realworld_router.dart';
+import 'package:real_world/repository/auth_repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,9 +12,27 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const RealWorldApp();
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => AuthRepository(),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(),
+          ),
+          BlocProvider(
+            create: (context) => SinginBloc(
+              authRepository: context.read<AuthRepository>(),
+            ),
+          ),
+        ],
+        child: const RealWorldRouter(),
+      ),
+    );
   }
 }

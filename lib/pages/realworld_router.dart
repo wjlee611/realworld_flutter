@@ -2,14 +2,14 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:real_world/pages/home/home_page.dart';
 
-class RealWorldApp extends StatefulWidget {
-  const RealWorldApp({super.key});
+class RealWorldRouter extends StatefulWidget {
+  const RealWorldRouter({super.key});
 
   @override
-  State<RealWorldApp> createState() => _RealWorldAppState();
+  State<RealWorldRouter> createState() => _RealWorldRouterState();
 }
 
-class _RealWorldAppState extends State<RealWorldApp> {
+class _RealWorldRouterState extends State<RealWorldRouter> {
   late final GoRouter _routerConf;
 
   @override
@@ -17,10 +17,10 @@ class _RealWorldAppState extends State<RealWorldApp> {
     super.initState();
 
     _routerConf = GoRouter(
-      initialLocation: '/home',
+      initialLocation: '/',
       routes: [
         GoRoute(
-          path: '/home',
+          path: '/',
           builder: (context, state) => const HomePage(),
         ),
       ],
