@@ -16,7 +16,7 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     // base url 설정
-    options.baseUrl = EndPoints.mock;
+    options.baseUrl = EndPoints.realworld;
 
     // jwt token 불러오기
     final jwt = await _storage.read(key: Strings.jwtToken);

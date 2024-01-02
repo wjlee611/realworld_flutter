@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => AuthBloc(),
+            create: (context) => AuthBloc(
+              authRepository: context.read<AuthRepository>(),
+            ),
           ),
         ],
         child: const RealWorldRouter(),

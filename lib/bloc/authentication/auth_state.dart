@@ -23,3 +23,14 @@ class AuthAuthenticatedState extends AuthState {
   @override
   List<Object?> get props => [user];
 }
+
+class AuthErrorState extends AuthState {
+  final String message;
+
+  AuthErrorState({
+    required this.message,
+  });
+
+  @override
+  List<Object?> get props => [message];
+}

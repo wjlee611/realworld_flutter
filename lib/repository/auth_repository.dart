@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:real_world/interceptors/auth_interceptor.dart';
 import 'package:real_world/interceptors/no_auth_interceptor.dart';
 import 'package:real_world/models/user_model.dart';
 
@@ -23,7 +24,7 @@ class AuthRepository {
       data: jsonEncode(body),
     );
 
-    return UserModel.fromJson(res.data);
+    return UserModel.fromJson(res.data['user']);
   }
 
   Future<UserModel> postRegistr({
@@ -31,26 +32,31 @@ class AuthRepository {
     required String password,
     required String username,
   }) async {
-    try {
-      Dio dio = Dio();
-      dio.interceptors.add(NoAuthInterceptor());
+    Dio dio = Dio();
+    dio.interceptors.add(NoAuthInterceptor());
 
-      Map<String, dynamic> body = {
-        'user': {
-          'username': username,
-          'email': email,
-          'password': password,
-        }
-      };
+    Map<String, dynamic> body = {
+      'user': {
+        'username': username,
+        'email': email,
+        'password': password,
+      }
+    };
 
-      var res = await dio.post(
-        '/api/users',
-        data: jsonEncode(body),
-      );
+    var res = await dio.post(
+      '/api/users',
+      data: jsonEncode(body),
+    );
 
-      return UserModel.fromJson(res.data);
-    } catch (e) {
-      rethrow;
-    }
+    return UserModel.fromJson(res.data['user']);
+  }
+
+  Future<UserModel> getCurrentUser() async {
+    Dio dio = Dio();
+    dio.interceptors.add(AuthInterceptor());
+
+    var res = await dio.get('/api/user');
+
+    return UserModel.fromJson(res.data['user']);
   }
 }

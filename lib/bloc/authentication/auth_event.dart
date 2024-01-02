@@ -1,11 +1,15 @@
-import 'package:real_world/bloc/authentication/auth_state.dart';
+import 'package:real_world/models/user_model.dart';
 
 abstract class AuthEvent {}
 
-class AuthChange extends AuthEvent {
-  final AuthState state;
+class AuthLogin extends AuthEvent {
+  UserModel user;
 
-  AuthChange({
-    required this.state,
+  AuthLogin({
+    required this.user,
   });
 }
+
+class AuthLogout extends AuthEvent {}
+
+class AuthGetCurrentUser extends AuthEvent {}

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:real_world/bloc/signin/signin_bloc.dart';
 import 'package:real_world/bloc/signup/signup_bloc.dart';
 import 'package:real_world/pages/home/home_page.dart';
 import 'package:real_world/pages/signin/signin_page.dart';
@@ -30,7 +31,12 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
         ),
         GoRoute(
           path: '/signin',
-          builder: (context, state) => const SigninPage(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => SigninBloc(
+              authRepository: context.read<AuthRepository>(),
+            ),
+            child: const SigninPage(),
+          ),
         ),
         GoRoute(
           path: '/signup',

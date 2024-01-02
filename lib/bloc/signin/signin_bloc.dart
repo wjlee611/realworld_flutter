@@ -5,10 +5,10 @@ import 'package:real_world/bloc/signin/signin_state.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/repository/auth_repository.dart';
 
-class SinginBloc extends Bloc<SigninEvent, SigninState> {
+class SigninBloc extends Bloc<SigninEvent, SigninState> {
   final AuthRepository authRepository;
 
-  SinginBloc({
+  SigninBloc({
     required this.authRepository,
   }) : super(const SigninState()) {
     on<SigninChangeEmail>(_signinChangeEmailHandler);
@@ -40,6 +40,7 @@ class SinginBloc extends Bloc<SigninEvent, SigninState> {
     SigninConfirm event,
     Emitter<SigninState> emit,
   ) async {
+    emit(state.copyWith(status: ECommonStatus.loading));
     try {
       if (state.email == null || state.email!.isEmpty) {
         emit(state.copyWith(
@@ -68,7 +69,6 @@ class SinginBloc extends Bloc<SigninEvent, SigninState> {
       ));
     } on DioException catch (e) {
       if (e.response != null) {
-        print(e.response!.data.toString());
         emit(state.copyWith(
           status: ECommonStatus.error,
           message: e.response!.data.toString(),
