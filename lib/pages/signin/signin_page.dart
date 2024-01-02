@@ -54,7 +54,7 @@ class SigninPage extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: () {
-                  context.replace('/signup');
+                  context.replace('/register');
                 },
                 child: const AppFont('Need an account?'),
               ),

@@ -47,11 +47,11 @@ class AuthActions extends StatelessWidget {
         return Row(
           children: [
             TextButton(
-              onPressed: () => context.push('/signin'),
+              onPressed: () => context.push('/login'),
               child: const AppFont('Sign in'),
             ),
             TextButton(
-              onPressed: () => context.push('/signup'),
+              onPressed: () => context.push('/register'),
               child: const AppFont('Sign up'),
             ),
           ],

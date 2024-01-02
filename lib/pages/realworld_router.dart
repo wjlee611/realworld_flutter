@@ -35,7 +35,7 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
           builder: (context, state) => const HomePage(),
         ),
         GoRoute(
-          path: '/signin',
+          path: '/login',
           builder: (context, state) => BlocProvider(
             create: (context) => SigninBloc(
               authRepository: context.read<AuthRepository>(),
@@ -44,7 +44,7 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
           ),
         ),
         GoRoute(
-          path: '/signup',
+          path: '/register',
           builder: (context, state) => BlocProvider(
             create: (context) => SignupBloc(
               authRepository: context.read<AuthRepository>(),
