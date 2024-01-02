@@ -27,9 +27,21 @@ class AuthActions extends StatelessWidget {
           );
         }
         if (state is AuthAuthenticatedState) {
-          return TextButton(
-            onPressed: () => context.push('/profile/${state.user.username}'),
-            child: AppFont(state.user.username ?? Strings.nullStr),
+          return Row(
+            children: [
+              IconButton(
+                onPressed: () => context.push('/setting'),
+                icon: Icon(
+                  Icons.settings,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              TextButton(
+                onPressed: () =>
+                    context.push('/profile/${state.user.username}'),
+                child: AppFont(state.user.username ?? Strings.nullStr),
+              ),
+            ],
           );
         }
         return Row(

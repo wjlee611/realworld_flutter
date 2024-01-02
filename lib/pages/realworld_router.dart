@@ -7,6 +7,7 @@ import 'package:real_world/bloc/signup/signup_bloc.dart';
 import 'package:real_world/constants/strings.dart';
 import 'package:real_world/pages/home/home_page.dart';
 import 'package:real_world/pages/profile/profile_page.dart';
+import 'package:real_world/pages/setting/setting_page.dart';
 import 'package:real_world/pages/signin/signin_page.dart';
 import 'package:real_world/pages/signup/signup_page.dart';
 import 'package:real_world/repository/auth_repository.dart';
@@ -61,6 +62,10 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
               username: state.pathParameters['username'] ?? Strings.nullStr,
             ),
           ),
+        ),
+        GoRoute(
+          path: '/setting',
+          builder: (context, state) => const SettingPage(),
         ),
       ],
     );
