@@ -59,4 +59,30 @@ class AuthRepository {
 
     return UserModel.fromJson(res.data['user']);
   }
+
+  Future<UserModel> updateUser({
+    required String email,
+    required String password,
+    required String username,
+    String? bio,
+  }) async {
+    Dio dio = Dio();
+    dio.interceptors.add(AuthInterceptor());
+
+    Map<String, dynamic> body = {
+      'user': {
+        'username': username,
+        'email': email,
+        'password': password,
+        'bio': bio,
+      }
+    };
+
+    var res = await dio.put(
+      '/api/user',
+      data: jsonEncode(body),
+    );
+
+    return UserModel.fromJson(res.data['user']);
+  }
 }

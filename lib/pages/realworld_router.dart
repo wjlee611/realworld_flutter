@@ -1,7 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/bloc/profile/profile_cubit.dart';
+import 'package:real_world/bloc/setting/setting_bloc.dart';
 import 'package:real_world/bloc/signin/signin_bloc.dart';
 import 'package:real_world/bloc/signup/signup_bloc.dart';
 import 'package:real_world/constants/strings.dart';
@@ -65,7 +68,14 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
         ),
         GoRoute(
           path: '/setting',
-          builder: (context, state) => const SettingPage(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => SettingBloc(
+              authRepository: context.read<AuthRepository>(),
+              user: (context.read<AuthBloc>().state as AuthAuthenticatedState)
+                  .user,
+            ),
+            child: const SettingPage(),
+          ),
         ),
       ],
     );
