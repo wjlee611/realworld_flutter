@@ -1,5 +1,7 @@
 abstract class HomeEvent {}
 
+class HomeGetTags extends HomeEvent {}
+
 class HomeChangeTag extends HomeEvent {
   final String tag;
 

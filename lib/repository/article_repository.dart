@@ -3,6 +3,22 @@ import 'package:real_world/interceptors/no_auth_interceptor.dart';
 import 'package:real_world/models/article_model.dart';
 
 class ArticleRepository {
+  Future<List<String>> getTags() async {
+    Dio dio = Dio();
+    dio.interceptors.add(NoAuthInterceptor());
+
+    var res = await dio.get(
+      '/api/tags',
+    );
+
+    List<String> tags = [];
+    for (var tag in res.data['tags']) {
+      tags.add(tag.toString());
+    }
+
+    return tags;
+  }
+
   Future<ArticlesModel> getArticles({
     String? tag,
     String? author,

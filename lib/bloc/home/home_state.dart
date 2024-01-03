@@ -6,6 +6,7 @@ import 'package:real_world/models/article_model.dart';
 class HomeState extends Equatable {
   final ECommonStatus status;
   final ArticlesModel articles;
+  final List<String> tags;
   final int page;
   final String tag;
   final String? message;
@@ -13,6 +14,7 @@ class HomeState extends Equatable {
   const HomeState({
     this.status = ECommonStatus.init,
     this.articles = const ArticlesModel(),
+    this.tags = const [],
     this.page = 1,
     this.tag = Strings.nullStr,
     this.message,
@@ -21,6 +23,7 @@ class HomeState extends Equatable {
   HomeState copyWith({
     ECommonStatus? status,
     ArticlesModel? articles,
+    List<String>? tags,
     int? page,
     String? tag,
     String? message,
@@ -28,6 +31,7 @@ class HomeState extends Equatable {
       HomeState(
         status: status ?? this.status,
         articles: articles ?? this.articles,
+        tags: tags ?? this.tags,
         page: page ?? this.page,
         tag: tag ?? this.tag,
         message: message ?? this.message,
@@ -37,6 +41,7 @@ class HomeState extends Equatable {
   List<Object?> get props => [
         status,
         articles,
+        tags,
         page,
         tag,
         message,
