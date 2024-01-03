@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:real_world/constants/end_points.dart';
 
 class NoAuthInterceptor extends Interceptor {
@@ -26,7 +27,7 @@ class NoAuthInterceptor extends Interceptor {
     ResponseInterceptorHandler handler,
   ) async {
     // Logging
-    print(
+    debugPrint(
       '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}',
     );
     return handler.next(response);
@@ -38,10 +39,10 @@ class NoAuthInterceptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) async {
     // Logging
-    print(
+    debugPrint(
       '[ERR] [${err.requestOptions.method}] ${err.requestOptions.uri}',
     );
-    print(
+    debugPrint(
       '[ERR] code: ${err.response?.statusCode}',
     );
 

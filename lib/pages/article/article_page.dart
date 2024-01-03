@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:real_world/bloc/article/article_bloc.dart';
 import 'package:real_world/bloc/article/article_event.dart';
 import 'package:real_world/bloc/article/article_state.dart';
@@ -10,7 +9,6 @@ import 'package:real_world/constants/gaps.dart';
 import 'package:real_world/constants/sizes.dart';
 import 'package:real_world/models/article_model.dart';
 import 'package:real_world/pages/article/widgets/author_widget.dart';
-import 'package:real_world/pages/home/widgets/tag_button.dart';
 
 class ArticlePage extends StatelessWidget {
   const ArticlePage({super.key});
