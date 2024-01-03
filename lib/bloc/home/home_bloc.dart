@@ -32,13 +32,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeGetArticles event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(status: ECommonStatus.loading));
+    emit(state.copyWith(
+      status: ECommonStatus.loading,
+      page: event.page,
+    ));
     try {
       var res = await articleRepository.getArticles(
         author: event.author,
         favorited: event.favorited,
         limit: limit,
-        offset: event.offset,
+        offset: ((event.page ?? 1) - 1) * HomeBloc.limit,
         tag: state.tag == Strings.nullStr ? null : state.tag,
       );
 

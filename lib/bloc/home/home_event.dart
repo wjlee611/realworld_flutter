@@ -9,13 +9,11 @@ class HomeChangeTag extends HomeEvent {
 class HomeGetArticles extends HomeEvent {
   final String? author;
   final String? favorited;
-  final int? limit;
-  final int? offset;
+  final int? page;
 
   HomeGetArticles({
     this.author,
     this.favorited,
-    this.limit,
-    this.offset,
+    this.page,
   });
 }

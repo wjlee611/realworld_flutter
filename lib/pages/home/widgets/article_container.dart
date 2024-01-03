@@ -35,7 +35,12 @@ class ArticleContainer extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppFont(article.author?.username ?? 'N/A'),
+                    AppFont(
+                      article.author?.username ?? 'N/A',
+                      style: const TextStyle(
+                        fontSize: Sizes.size16,
+                      ),
+                    ),
                     AppFont(
                       article.createdAt.toString(),
                       style: TextStyle(
@@ -106,7 +111,7 @@ class ArticleContainer extends StatelessWidget {
                         TagButton(tag: tag),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ],
