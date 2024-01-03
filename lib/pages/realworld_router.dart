@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:real_world/bloc/authentication/auth_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_state.dart';
+import 'package:real_world/bloc/home/home_bloc.dart';
 import 'package:real_world/bloc/profile/profile_cubit.dart';
 import 'package:real_world/bloc/setting/setting_bloc.dart';
 import 'package:real_world/bloc/signin/signin_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:real_world/pages/profile/profile_page.dart';
 import 'package:real_world/pages/setting/setting_page.dart';
 import 'package:real_world/pages/signin/signin_page.dart';
 import 'package:real_world/pages/signup/signup_page.dart';
+import 'package:real_world/repository/article_repository.dart';
 import 'package:real_world/repository/auth_repository.dart';
 import 'package:real_world/repository/profile_repository.dart';
 
@@ -35,7 +37,12 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => HomeBloc(
+              articleRepository: context.read<ArticleRepository>(),
+            ),
+            child: const HomePage(),
+          ),
         ),
         GoRoute(
           path: '/login',
