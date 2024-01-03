@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:real_world/bloc/article/article_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/bloc/home/home_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:real_world/bloc/setting/setting_bloc.dart';
 import 'package:real_world/bloc/signin/signin_bloc.dart';
 import 'package:real_world/bloc/signup/signup_bloc.dart';
 import 'package:real_world/constants/strings.dart';
+import 'package:real_world/pages/article/article_page.dart';
 import 'package:real_world/pages/home/home_page.dart';
 import 'package:real_world/pages/profile/profile_page.dart';
 import 'package:real_world/pages/setting/setting_page.dart';
@@ -82,6 +84,16 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
                   .user,
             ),
             child: const SettingPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/article/:slug',
+          builder: (context, state) => BlocProvider(
+            create: (context) => ArticleBloc(
+              slug: state.pathParameters['slug']!,
+              articleRepository: context.read<ArticleRepository>(),
+            ),
+            child: const ArticlePage(),
           ),
         ),
       ],

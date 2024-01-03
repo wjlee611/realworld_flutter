@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:real_world/common/widgets/app_font.dart';
 import 'package:real_world/constants/gaps.dart';
 import 'package:real_world/constants/sizes.dart';
@@ -23,7 +24,9 @@ class ArticleContainer extends StatelessWidget {
         shape: const LinearBorder(),
         padding: const EdgeInsets.all(Sizes.size20),
       ),
-      onPressed: () {},
+      onPressed: () {
+        context.push('/article/${article.slug}');
+      },
       child: Container(
         decoration: const BoxDecoration(),
         child: Column(
@@ -35,10 +38,15 @@ class ArticleContainer extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppFont(
-                      article.author?.username ?? 'N/A',
-                      style: const TextStyle(
-                        fontSize: Sizes.size16,
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/profile/${article.author?.username}');
+                      },
+                      child: AppFont(
+                        article.author?.username ?? 'N/A',
+                        style: const TextStyle(
+                          fontSize: Sizes.size16,
+                        ),
                       ),
                     ),
                     AppFont(

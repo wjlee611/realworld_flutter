@@ -43,4 +43,15 @@ class ArticleRepository {
 
     return ArticlesModel.fromJson(res.data);
   }
+
+  Future<ArticleModel> getArticle({
+    required String slug,
+  }) async {
+    Dio dio = Dio();
+    dio.interceptors.add(NoAuthInterceptor());
+
+    var res = await dio.get('/api/articles/$slug');
+
+    return ArticleModel.fromJson(res.data['article']);
+  }
 }
