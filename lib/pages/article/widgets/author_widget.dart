@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:real_world/bloc/article/article_bloc.dart';
 import 'package:real_world/bloc/article/article_event.dart';
 import 'package:real_world/bloc/article/article_state.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/common/widgets/app_font.dart';
 import 'package:real_world/constants/gaps.dart';
@@ -60,6 +62,11 @@ class AuthorWidget extends StatelessWidget {
               ),
             ),
             onPressed: () {
+              if (context.read<AuthBloc>().state is! AuthAuthenticatedState) {
+                context.push('/login');
+                return;
+              }
+
               if (state.articleStatus == ECommonStatus.loading) return;
               if (state.article?.author?.following == true) {
                 context.read<ArticleBloc>().add(ArticleUnfollowUser());

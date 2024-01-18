@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/bloc/profile/profile_cubit.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/common/widgets/app_font.dart';
@@ -32,6 +35,11 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
+                if (context.read<AuthBloc>().state is! AuthAuthenticatedState) {
+                  context.push('/login');
+                  return;
+                }
+
                 if (state.status == ECommonStatus.loading) return;
                 if (state.profile?.following == true) {
                   context.read<ProfileCubit>().unfollowUser();
