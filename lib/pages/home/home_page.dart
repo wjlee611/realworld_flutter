@@ -58,15 +58,15 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
+        listenWhen: (previous, current) =>
+            previous.page != current.page || previous.tag != current.tag,
         listener: (context, state) {
-          if (state.status == ECommonStatus.loaded) {
-            if (_controller.hasClients) {
-              _controller.animateTo(
-                0,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-            }
+          if (_controller.hasClients) {
+            _controller.animateTo(
+              0,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
           }
         },
         builder: (context, state) {

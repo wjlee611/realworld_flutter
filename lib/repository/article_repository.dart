@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:real_world/interceptors/auth_interceptor.dart';
 import 'package:real_world/interceptors/no_auth_interceptor.dart';
 import 'package:real_world/models/article_model.dart';
 
@@ -51,6 +52,28 @@ class ArticleRepository {
     dio.interceptors.add(NoAuthInterceptor());
 
     var res = await dio.get('/api/articles/$slug');
+
+    return ArticleModel.fromJson(res.data['article']);
+  }
+
+  Future<ArticleModel> favArticle({
+    required String slug,
+  }) async {
+    Dio dio = Dio();
+    dio.interceptors.add(AuthInterceptor());
+
+    var res = await dio.post('/api/articles/$slug/favorite');
+
+    return ArticleModel.fromJson(res.data['article']);
+  }
+
+  Future<ArticleModel> unfavArticle({
+    required String slug,
+  }) async {
+    Dio dio = Dio();
+    dio.interceptors.add(AuthInterceptor());
+
+    var res = await dio.delete('/api/articles/$slug/favorite');
 
     return ArticleModel.fromJson(res.data['article']);
   }

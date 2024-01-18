@@ -19,6 +19,8 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     on<ArticleGetArticle>(_articleGetArticleHandler);
     on<ArticleFollowUser>(_articleFollowUserHandler);
     on<ArticleUnfollowUser>(_articleUnfollowUserHandler);
+    on<ArticleFav>(_articleFavHandler);
+    on<ArticleUnfav>(_articleUnfavHandler);
   }
 
   Future<void> _articleGetArticleHandler(
@@ -108,6 +110,78 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
         article: state.article?.copyWithAuthor(
           author: res,
         ),
+      ));
+    } on DioException catch (e) {
+      if (e.response != null) {
+        emit(state.copyWith(
+          articleStatus: ECommonStatus.error,
+          message: e.response!.data.toString(),
+        ));
+      } else {
+        emit(state.copyWith(
+          articleStatus: ECommonStatus.error,
+          message: e.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        articleStatus: ECommonStatus.error,
+        message: e.toString(),
+      ));
+    }
+  }
+
+  Future<void> _articleFavHandler(
+    ArticleFav event,
+    Emitter<ArticleState> emit,
+  ) async {
+    if (state.article!.slug == null) return;
+
+    emit(state.copyWith(articleStatus: ECommonStatus.loading));
+    try {
+      var res = await articleRepository.favArticle(
+        slug: state.article!.slug!,
+      );
+
+      emit(state.copyWith(
+        articleStatus: ECommonStatus.loaded,
+        article: res,
+      ));
+    } on DioException catch (e) {
+      if (e.response != null) {
+        emit(state.copyWith(
+          articleStatus: ECommonStatus.error,
+          message: e.response!.data.toString(),
+        ));
+      } else {
+        emit(state.copyWith(
+          articleStatus: ECommonStatus.error,
+          message: e.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        articleStatus: ECommonStatus.error,
+        message: e.toString(),
+      ));
+    }
+  }
+
+  Future<void> _articleUnfavHandler(
+    ArticleUnfav event,
+    Emitter<ArticleState> emit,
+  ) async {
+    if (state.article!.slug == null) return;
+
+    emit(state.copyWith(articleStatus: ECommonStatus.loading));
+    try {
+      var res = await articleRepository.unfavArticle(
+        slug: state.article!.slug!,
+      );
+
+      emit(state.copyWith(
+        articleStatus: ECommonStatus.loaded,
+        article: res,
       ));
     } on DioException catch (e) {
       if (e.response != null) {
