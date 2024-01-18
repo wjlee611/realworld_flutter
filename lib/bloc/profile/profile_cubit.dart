@@ -40,6 +40,68 @@ class ProfileCubit extends Cubit<ProfileState> {
       ));
     }
   }
+
+  void followUser() async {
+    if (state.profile?.username == null) return;
+
+    emit(state.copyWith(status: ECommonStatus.loading));
+    try {
+      var res = await profileRepository.followUser(state.profile!.username!);
+
+      emit(state.copyWith(
+        status: ECommonStatus.loaded,
+        profile: res,
+      ));
+    } on DioException catch (e) {
+      if (e.response != null) {
+        emit(state.copyWith(
+          status: ECommonStatus.error,
+          message: e.response!.data.toString(),
+        ));
+      } else {
+        emit(state.copyWith(
+          status: ECommonStatus.error,
+          message: e.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        status: ECommonStatus.error,
+        message: e.toString(),
+      ));
+    }
+  }
+
+  void unfollowUser() async {
+    if (state.profile?.username == null) return;
+
+    emit(state.copyWith(status: ECommonStatus.loading));
+    try {
+      var res = await profileRepository.unfollowUser(state.profile!.username!);
+
+      emit(state.copyWith(
+        status: ECommonStatus.loaded,
+        profile: res,
+      ));
+    } on DioException catch (e) {
+      if (e.response != null) {
+        emit(state.copyWith(
+          status: ECommonStatus.error,
+          message: e.response!.data.toString(),
+        ));
+      } else {
+        emit(state.copyWith(
+          status: ECommonStatus.error,
+          message: e.message,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        status: ECommonStatus.error,
+        message: e.toString(),
+      ));
+    }
+  }
 }
 
 class ProfileState extends Equatable {

@@ -31,8 +31,9 @@ class AuthorWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () {
-                context.push('/profile/${author.username}');
+              onTap: () async {
+                await context.push('/profile/${author.username}');
+                context.read<ArticleBloc>().add(ArticleGetArticle());
               },
               child: AppFont(
                 author.username ?? 'N/A',
@@ -52,7 +53,7 @@ class AuthorWidget extends StatelessWidget {
         ),
         BlocBuilder<ArticleBloc, ArticleState>(
           builder: (context, state) => IconButton.outlined(
-            color: Colors.white,
+            color: color ?? Colors.white,
             style: IconButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Sizes.size5),
@@ -79,8 +80,8 @@ class AuthorWidget extends StatelessWidget {
                   state.article?.author?.following == true
                       ? 'Unfollow'
                       : 'Follow',
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: color ?? Colors.white,
                   ),
                 ),
               ],

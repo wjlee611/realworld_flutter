@@ -21,9 +21,47 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const AppFont('Profile'),
-        actions: const [],
+        centerTitle: true,
+        actions: [
+          BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) => IconButton.outlined(
+              color: Theme.of(context).primaryColor,
+              style: IconButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Sizes.size5),
+                ),
+              ),
+              onPressed: () {
+                if (state.status == ECommonStatus.loading) return;
+                if (state.profile?.following == true) {
+                  context.read<ProfileCubit>().unfollowUser();
+                } else {
+                  context.read<ProfileCubit>().followUser();
+                }
+              },
+              icon: Row(
+                children: [
+                  Icon(
+                    state.profile?.following == true ? Icons.remove : Icons.add,
+                    size: Sizes.size16,
+                  ),
+                  Gaps.h3,
+                  AppFont(
+                    state.profile?.following == true ? 'Unfollow' : 'Follow',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Gaps.h10,
+        ],
       ),
       body: BlocBuilder<ProfileCubit, ProfileState>(
+        buildWhen: (previous, current) =>
+            current.profile == null || current.status == ECommonStatus.loaded,
         builder: (context, state) {
           if (state.status == ECommonStatus.init) {
             context.read<ProfileCubit>().getProfile(username);

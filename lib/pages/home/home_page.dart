@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ),
+        centerTitle: false,
         actions: const [
           AuthActions(),
         ],
