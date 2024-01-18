@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/bloc/profile/profile_cubit.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/common/widgets/app_font.dart';
@@ -21,9 +24,52 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const AppFont('Profile'),
-        actions: const [],
+        centerTitle: true,
+        actions: [
+          BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) => IconButton.outlined(
+              color: Theme.of(context).primaryColor,
+              style: IconButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Sizes.size5),
+                ),
+              ),
+              onPressed: () {
+                if (context.read<AuthBloc>().state is! AuthAuthenticatedState) {
+                  context.push('/login');
+                  return;
+                }
+
+                if (state.status == ECommonStatus.loading) return;
+                if (state.profile?.following == true) {
+                  context.read<ProfileCubit>().unfollowUser();
+                } else {
+                  context.read<ProfileCubit>().followUser();
+                }
+              },
+              icon: Row(
+                children: [
+                  Icon(
+                    state.profile?.following == true ? Icons.remove : Icons.add,
+                    size: Sizes.size16,
+                  ),
+                  Gaps.h3,
+                  AppFont(
+                    state.profile?.following == true ? 'Unfollow' : 'Follow',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Gaps.h10,
+        ],
       ),
       body: BlocBuilder<ProfileCubit, ProfileState>(
+        buildWhen: (previous, current) =>
+            current.profile == null || current.status == ECommonStatus.loaded,
         builder: (context, state) {
           if (state.status == ECommonStatus.init) {
             context.read<ProfileCubit>().getProfile(username);

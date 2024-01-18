@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:real_world/bloc/home/home_bloc.dart';
+import 'package:real_world/bloc/home/home_event.dart';
 import 'package:real_world/common/widgets/app_font.dart';
 import 'package:real_world/constants/gaps.dart';
 import 'package:real_world/constants/sizes.dart';
@@ -24,8 +27,11 @@ class ArticleContainer extends StatelessWidget {
         shape: const LinearBorder(),
         padding: const EdgeInsets.all(Sizes.size20),
       ),
-      onPressed: () {
-        context.push('/article/${article.slug}');
+      onPressed: () async {
+        await context.push('/article/${article.slug}');
+        context.read<HomeBloc>().add(HomeGetArticles(
+              page: context.read<HomeBloc>().state.page,
+            ));
       },
       child: Container(
         decoration: const BoxDecoration(),
@@ -57,14 +63,15 @@ class ArticleContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-                IconButton.outlined(
-                  style: IconButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Sizes.size5),
+                Container(
+                  padding: const EdgeInsets.all(Sizes.size10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
                     ),
+                    borderRadius: BorderRadius.circular(Sizes.size5),
                   ),
-                  onPressed: () {},
-                  icon: Row(
+                  child: Row(
                     children: [
                       const Icon(
                         Icons.favorite,
@@ -74,7 +81,7 @@ class ArticleContainer extends StatelessWidget {
                       AppFont(article.favoritesCount.toString()),
                     ],
                   ),
-                )
+                ),
               ],
             ),
             Gaps.v10,

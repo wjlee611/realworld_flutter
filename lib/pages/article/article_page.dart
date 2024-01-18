@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:real_world/bloc/article/article_bloc.dart';
 import 'package:real_world/bloc/article/article_event.dart';
 import 'package:real_world/bloc/article/article_state.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
 import 'package:real_world/common/widgets/app_font.dart';
 import 'package:real_world/constants/gaps.dart';
@@ -18,8 +21,54 @@ class ArticlePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const AppFont('Article'),
+        actions: [
+          BlocBuilder<ArticleBloc, ArticleState>(
+            builder: (context, state) => IconButton.outlined(
+              color: Theme.of(context).primaryColor,
+              style: IconButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Sizes.size5),
+                ),
+              ),
+              onPressed: () {
+                if (context.read<AuthBloc>().state is! AuthAuthenticatedState) {
+                  context.push('/login');
+                  return;
+                }
+
+                if (state.articleStatus == ECommonStatus.loading) return;
+                if (state.article?.favorited == true) {
+                  context.read<ArticleBloc>().add(ArticleUnfav());
+                } else {
+                  context.read<ArticleBloc>().add(ArticleFav());
+                }
+              },
+              icon: Row(
+                children: [
+                  Icon(
+                    state.article?.favorited == true
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    size: Sizes.size16,
+                  ),
+                  Gaps.h3,
+                  AppFont(
+                    state.article?.favoritesCount.toString() ?? '0',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Gaps.h10,
+        ],
       ),
       body: BlocBuilder<ArticleBloc, ArticleState>(
+        buildWhen: (previous, current) =>
+            current.article == null ||
+            current.articleStatus == ECommonStatus.loaded,
         builder: (context, state) {
           if (state.articleStatus == ECommonStatus.init) {
             context.read<ArticleBloc>().add(ArticleGetArticle());
