@@ -20,6 +20,9 @@ class ArticlePage extends StatelessWidget {
         title: const AppFont('Article'),
       ),
       body: BlocBuilder<ArticleBloc, ArticleState>(
+        buildWhen: (previous, current) =>
+            current.article == null ||
+            current.articleStatus == ECommonStatus.loaded,
         builder: (context, state) {
           if (state.articleStatus == ECommonStatus.init) {
             context.read<ArticleBloc>().add(ArticleGetArticle());

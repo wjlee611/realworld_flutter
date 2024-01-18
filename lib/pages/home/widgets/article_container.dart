@@ -74,7 +74,7 @@ class ArticleContainer extends StatelessWidget {
                       AppFont(article.favoritesCount.toString()),
                     ],
                   ),
-                )
+                ),
               ],
             ),
             Gaps.v10,

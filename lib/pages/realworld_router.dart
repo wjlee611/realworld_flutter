@@ -92,6 +92,7 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
             create: (context) => ArticleBloc(
               slug: state.pathParameters['slug']!,
               articleRepository: context.read<ArticleRepository>(),
+              profileRepository: context.read<ProfileRepository>(),
             ),
             child: const ArticlePage(),
           ),

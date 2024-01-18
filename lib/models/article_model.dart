@@ -60,6 +60,22 @@ class ArticleModel extends Equatable {
 
   Map<String, dynamic> toJson() => _$ArticleModelToJson(this);
 
+  ArticleModel copyWithAuthor({
+    ProfileModel? author,
+  }) =>
+      ArticleModel(
+        slug: slug,
+        title: title,
+        description: description,
+        body: body,
+        tagList: tagList,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        favorited: favorited,
+        favoritesCount: favoritesCount,
+        author: author ?? this.author,
+      );
+
   @override
   List<Object?> get props => [
         slug,
