@@ -67,7 +67,7 @@ class AuthorWidget extends StatelessWidget {
                 return;
               }
 
-              if (state.articleStatus == ECommonStatus.loading) return;
+              if (state.status == ECommonStatus.loading) return;
               if (state.article?.author?.following == true) {
                 context.read<ArticleBloc>().add(ArticleUnfollowUser());
               } else {
