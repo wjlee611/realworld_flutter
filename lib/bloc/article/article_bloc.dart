@@ -27,31 +27,31 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     ArticleGetArticle event,
     Emitter<ArticleState> emit,
   ) async {
-    emit(state.copyWith(articleStatus: ECommonStatus.loading));
+    emit(state.copyWith(status: ECommonStatus.loading));
     try {
       var res = await articleRepository.getArticle(
         slug: slug,
       );
 
       emit(state.copyWith(
-        articleStatus: ECommonStatus.loaded,
+        status: ECommonStatus.loaded,
         article: res,
       ));
     } on DioException catch (e) {
       if (e.response != null) {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.response!.data.toString(),
         ));
       } else {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        articleStatus: ECommonStatus.error,
+        status: ECommonStatus.error,
         message: e.toString(),
       ));
     }
@@ -63,13 +63,13 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   ) async {
     if (state.article?.author?.username == null) return;
 
-    emit(state.copyWith(articleStatus: ECommonStatus.loading));
+    emit(state.copyWith(status: ECommonStatus.loading));
     try {
       var res =
           await profileRepository.followUser(state.article!.author!.username!);
 
       emit(state.copyWith(
-        articleStatus: ECommonStatus.loaded,
+        status: ECommonStatus.loaded,
         article: state.article?.copyWithAuthor(
           author: res,
         ),
@@ -77,18 +77,18 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     } on DioException catch (e) {
       if (e.response != null) {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.response!.data.toString(),
         ));
       } else {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        articleStatus: ECommonStatus.error,
+        status: ECommonStatus.error,
         message: e.toString(),
       ));
     }
@@ -100,13 +100,13 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   ) async {
     if (state.article?.author?.username == null) return;
 
-    emit(state.copyWith(articleStatus: ECommonStatus.loading));
+    emit(state.copyWith(status: ECommonStatus.loading));
     try {
       var res = await profileRepository
           .unfollowUser(state.article!.author!.username!);
 
       emit(state.copyWith(
-        articleStatus: ECommonStatus.loaded,
+        status: ECommonStatus.loaded,
         article: state.article?.copyWithAuthor(
           author: res,
         ),
@@ -114,18 +114,18 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     } on DioException catch (e) {
       if (e.response != null) {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.response!.data.toString(),
         ));
       } else {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        articleStatus: ECommonStatus.error,
+        status: ECommonStatus.error,
         message: e.toString(),
       ));
     }
@@ -137,31 +137,31 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   ) async {
     if (state.article!.slug == null) return;
 
-    emit(state.copyWith(articleStatus: ECommonStatus.loading));
+    emit(state.copyWith(status: ECommonStatus.loading));
     try {
       var res = await articleRepository.favArticle(
         slug: state.article!.slug!,
       );
 
       emit(state.copyWith(
-        articleStatus: ECommonStatus.loaded,
+        status: ECommonStatus.loaded,
         article: res,
       ));
     } on DioException catch (e) {
       if (e.response != null) {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.response!.data.toString(),
         ));
       } else {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        articleStatus: ECommonStatus.error,
+        status: ECommonStatus.error,
         message: e.toString(),
       ));
     }
@@ -173,31 +173,31 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   ) async {
     if (state.article!.slug == null) return;
 
-    emit(state.copyWith(articleStatus: ECommonStatus.loading));
+    emit(state.copyWith(status: ECommonStatus.loading));
     try {
       var res = await articleRepository.unfavArticle(
         slug: state.article!.slug!,
       );
 
       emit(state.copyWith(
-        articleStatus: ECommonStatus.loaded,
+        status: ECommonStatus.loaded,
         article: res,
       ));
     } on DioException catch (e) {
       if (e.response != null) {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.response!.data.toString(),
         ));
       } else {
         emit(state.copyWith(
-          articleStatus: ECommonStatus.error,
+          status: ECommonStatus.error,
           message: e.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        articleStatus: ECommonStatus.error,
+        status: ECommonStatus.error,
         message: e.toString(),
       ));
     }

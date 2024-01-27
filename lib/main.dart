@@ -4,6 +4,7 @@ import 'package:real_world/bloc/authentication/auth_bloc.dart';
 import 'package:real_world/pages/realworld_router.dart';
 import 'package:real_world/repository/article_repository.dart';
 import 'package:real_world/repository/auth_repository.dart';
+import 'package:real_world/repository/comment_repository.dart';
 import 'package:real_world/repository/profile_repository.dart';
 
 void main() {
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => ArticleRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => CommentRepository(),
         ),
       ],
       child: MultiBlocProvider(

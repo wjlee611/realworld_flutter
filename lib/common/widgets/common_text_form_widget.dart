@@ -5,17 +5,20 @@ class CommonTextForm extends StatelessWidget {
   final String hint;
   final Function(String value) onChange;
   final String? initialValue;
+  final TextEditingController? controller;
 
   const CommonTextForm({
     super.key,
     required this.hint,
     required this.onChange,
     this.initialValue,
+    this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       initialValue: initialValue,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
@@ -27,6 +30,7 @@ class CommonTextForm extends StatelessWidget {
       ),
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
       },
       onChanged: onChange,
     );

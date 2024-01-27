@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:real_world/bloc/article/article_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_state.dart';
+import 'package:real_world/bloc/comment/comment_bloc.dart';
 import 'package:real_world/bloc/home/home_bloc.dart';
 import 'package:real_world/bloc/profile/profile_cubit.dart';
 import 'package:real_world/bloc/setting/setting_bloc.dart';
@@ -18,6 +19,7 @@ import 'package:real_world/pages/signin/signin_page.dart';
 import 'package:real_world/pages/signup/signup_page.dart';
 import 'package:real_world/repository/article_repository.dart';
 import 'package:real_world/repository/auth_repository.dart';
+import 'package:real_world/repository/comment_repository.dart';
 import 'package:real_world/repository/profile_repository.dart';
 
 class RealWorldRouter extends StatefulWidget {
@@ -88,12 +90,22 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
         ),
         GoRoute(
           path: '/article/:slug',
-          builder: (context, state) => BlocProvider(
-            create: (context) => ArticleBloc(
-              slug: state.pathParameters['slug']!,
-              articleRepository: context.read<ArticleRepository>(),
-              profileRepository: context.read<ProfileRepository>(),
-            ),
+          builder: (context, state) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => ArticleBloc(
+                  slug: state.pathParameters['slug']!,
+                  articleRepository: context.read<ArticleRepository>(),
+                  profileRepository: context.read<ProfileRepository>(),
+                ),
+              ),
+              BlocProvider(
+                create: (context) => CommentBloc(
+                  commentRepository: context.read<CommentRepository>(),
+                  slug: state.pathParameters['slug']!,
+                ),
+              ),
+            ],
             child: const ArticlePage(),
           ),
         ),

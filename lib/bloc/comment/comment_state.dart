@@ -1,34 +1,38 @@
 import 'package:equatable/equatable.dart';
 import 'package:real_world/common/enum/common_status_enum.dart';
-import 'package:real_world/models/article_model.dart';
+import 'package:real_world/models/comment_model.dart';
 
-class ArticleState extends Equatable {
+class CommentState extends Equatable {
   final ECommonStatus status;
-  final ArticleModel? article;
+  final List<CommentModel> comments;
+  final String? comment;
   final String? message;
 
-  const ArticleState({
+  const CommentState({
     this.status = ECommonStatus.init,
-    this.article,
+    this.comments = const [],
+    this.comment,
     this.message,
   });
 
-  ArticleState copyWith({
+  CommentState copyWith({
     ECommonStatus? status,
-    ECommonStatus? commentStatus,
-    ArticleModel? article,
+    List<CommentModel>? comments,
+    String? comment,
     String? message,
   }) =>
-      ArticleState(
+      CommentState(
         status: status ?? this.status,
-        article: article ?? this.article,
+        comments: comments ?? this.comments,
+        comment: comment ?? this.comment,
         message: message ?? this.message,
       );
 
   @override
   List<Object?> get props => [
         status,
-        article,
+        comments,
+        comment,
         message,
       ];
 }

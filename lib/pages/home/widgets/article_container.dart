@@ -94,7 +94,7 @@ class ArticleContainer extends StatelessWidget {
               ),
             ),
             AppFont(
-              article.body ?? 'N/A',
+              article.body?.replaceAll("\\n", '\n') ?? 'N/A',
               style: TextStyle(
                 color: Colors.grey.shade600,
               ),
