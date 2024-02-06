@@ -51,35 +51,10 @@ class _CommentWidgetState extends State<CommentWidget> {
             horizontal: Sizes.size20,
             vertical: Sizes.size10,
           ),
-          child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-            if (state is! AuthAuthenticatedState) {
-              return ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStatePropertyAll(
-                    BeveledRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Sizes.size5,
-                      ),
-                    ),
-                  ),
-                ),
-                onPressed: () {
-                  context.push('/login');
-                },
-                child: const AppFont('Sign in to add comment!'),
-              );
-            }
-            return Row(
-              children: [
-                Expanded(
-                  child: CommonTextForm(
-                    controller: _controller,
-                    hint: 'Add Comment!',
-                    onChange: (value) => _onChange(context, value),
-                  ),
-                ),
-                Gaps.h10,
-                ElevatedButton(
+          child: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is! AuthAuthenticatedState) {
+                return ElevatedButton(
                   style: ButtonStyle(
                     shape: MaterialStatePropertyAll(
                       BeveledRectangleBorder(
@@ -89,12 +64,39 @@ class _CommentWidgetState extends State<CommentWidget> {
                       ),
                     ),
                   ),
-                  onPressed: () => _onSend(context),
-                  child: const AppFont('Add'),
-                ),
-              ],
-            );
-          }),
+                  onPressed: () {
+                    context.push('/login');
+                  },
+                  child: const AppFont('Sign in to add comment!'),
+                );
+              }
+              return Row(
+                children: [
+                  Expanded(
+                    child: CommonTextForm(
+                      controller: _controller,
+                      hint: 'Add Comment!',
+                      onChange: (value) => _onChange(context, value),
+                    ),
+                  ),
+                  Gaps.h10,
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStatePropertyAll(
+                        BeveledRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Sizes.size5,
+                          ),
+                        ),
+                      ),
+                    ),
+                    onPressed: () => _onSend(context),
+                    child: const AppFont('Add'),
+                  ),
+                ],
+              );
+            },
+          ),
         );
       },
     );

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:real_world/bloc/authentication/auth_bloc.dart';
+import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/bloc/home/home_bloc.dart';
 import 'package:real_world/bloc/home/home_event.dart';
 import 'package:real_world/bloc/home/home_state.dart';
@@ -29,6 +32,18 @@ class _HomePageState extends State<HomePage> {
     _controller = ScrollController();
   }
 
+  void _onTapTag(String tag) {
+    context.read<HomeBloc>().add(HomeChangeTag(tag));
+  }
+
+  void _onTapAdd() {
+    if (context.read<AuthBloc>().state is! AuthAuthenticatedState) {
+      context.push('/login');
+      return;
+    }
+    context.push('/write_article');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +54,7 @@ class _HomePageState extends State<HomePage> {
               return const AppFont('RealWorld');
             }
             return GestureDetector(
-              onTap: () {
-                context.read<HomeBloc>().add(HomeChangeTag(Strings.nullStr));
-              },
+              onTap: () => _onTapTag(Strings.nullStr),
               child: Row(
                 children: [
                   const Icon(Icons.cancel),
@@ -56,6 +69,13 @@ class _HomePageState extends State<HomePage> {
         actions: const [
           AuthActions(),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onTapAdd,
+        shape: const CircleBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
         listenWhen: (previous, current) =>
@@ -106,11 +126,7 @@ class _HomePageState extends State<HomePage> {
                               for (var tag in state.tags)
                                 TagButton(
                                   tag: tag,
-                                  onTap: () {
-                                    context
-                                        .read<HomeBloc>()
-                                        .add(HomeChangeTag(tag));
-                                  },
+                                  onTap: () => _onTapTag(tag),
                                 ),
                             ],
                           ),
@@ -126,6 +142,10 @@ class _HomePageState extends State<HomePage> {
                               i++)
                             PageButton(page: i + 1),
                         ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).padding.bottom +
+                            Sizes.size80,
                       ),
                     ],
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:real_world/bloc/article/article_bloc.dart';
+import 'package:real_world/bloc/article/write_article_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_bloc.dart';
 import 'package:real_world/bloc/authentication/auth_state.dart';
 import 'package:real_world/bloc/comment/comment_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:real_world/bloc/signin/signin_bloc.dart';
 import 'package:real_world/bloc/signup/signup_bloc.dart';
 import 'package:real_world/constants/strings.dart';
 import 'package:real_world/pages/article/article_page.dart';
+import 'package:real_world/pages/article_write/article_write_page.dart';
 import 'package:real_world/pages/home/home_page.dart';
 import 'package:real_world/pages/profile/profile_page.dart';
 import 'package:real_world/pages/setting/setting_page.dart';
@@ -107,6 +109,15 @@ class _RealWorldRouterState extends State<RealWorldRouter> {
               ),
             ],
             child: const ArticlePage(),
+          ),
+        ),
+        GoRoute(
+          path: '/write_article',
+          builder: (context, state) => BlocProvider(
+            create: (context) => WriteArticleBloc(
+              articleRepository: context.read<ArticleRepository>(),
+            ),
+            child: const ArticleWritePage(),
           ),
         ),
       ],
