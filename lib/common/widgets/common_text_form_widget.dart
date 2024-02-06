@@ -6,6 +6,7 @@ class CommonTextForm extends StatelessWidget {
   final Function(String value) onChange;
   final String? initialValue;
   final TextEditingController? controller;
+  final bool expanded;
 
   const CommonTextForm({
     super.key,
@@ -13,6 +14,7 @@ class CommonTextForm extends StatelessWidget {
     required this.onChange,
     this.initialValue,
     this.controller,
+    this.expanded = false,
   });
 
   @override
@@ -21,10 +23,7 @@ class CommonTextForm extends StatelessWidget {
       controller: controller,
       initialValue: initialValue,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: Sizes.size1,
-          horizontal: Sizes.size10,
-        ),
+        contentPadding: const EdgeInsets.all(Sizes.size10),
         hintText: hint,
         border: const OutlineInputBorder(),
       ),
@@ -32,6 +31,11 @@ class CommonTextForm extends StatelessWidget {
         FocusScope.of(context).unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
       },
+      expands: expanded,
+      keyboardType: expanded ? TextInputType.multiline : null,
+      minLines: null,
+      maxLines: expanded ? null : 1,
+      textAlignVertical: TextAlignVertical.top,
       onChanged: onChange,
     );
   }

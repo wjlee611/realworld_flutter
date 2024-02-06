@@ -188,7 +188,7 @@ class ArticlePage extends StatelessWidget {
           builder: (context, state) {
             return SliverList.separated(
               itemBuilder: (context, index) => CommentItemWidget(
-                comment: state.comments[index],
+                comment: state.comments[state.comments.length - index - 1],
               ),
               separatorBuilder: (context, index) => Container(
                 width: double.infinity,

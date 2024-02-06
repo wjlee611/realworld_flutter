@@ -77,4 +77,32 @@ class ArticleRepository {
 
     return ArticleModel.fromJson(res.data['article']);
   }
+
+  Future<ArticleModel> createArticle({
+    required String title,
+    required String description,
+    required String body,
+    List<String>? tagList,
+  }) async {
+    Dio dio = Dio();
+    dio.interceptors.add(AuthInterceptor());
+
+    Map<String, dynamic> bodyData = {
+      'title': title,
+      'description': description,
+      'body': body,
+    };
+    if (tagList != null && tagList.isNotEmpty) {
+      bodyData['tagList'] = tagList;
+    }
+
+    var res = await dio.post(
+      '/api/articles',
+      data: {"article": bodyData},
+    );
+
+    print(res);
+
+    return ArticleModel.fromJson(res.data['article']);
+  }
 }
